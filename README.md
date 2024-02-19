@@ -1,39 +1,38 @@
-#1)	How have sales compared by month from Jan 2021 – Jun 2021?
+#Average scores across subjects of students grouped by year group.
+select si.year_group ,avg(se.math_score) as avg_maths ,avg(se.reading_score) as avg_reading, avg(se.writing_score) as avg_writing from `midyear-nebula-413114.student_details.student_exam_results`AS se join `midyear-nebula-413114.student_details.student_csv`as si
+on se.student_id = si.student_id  
+group by si.year_group 
+ORDER BY si.year_group  ASC;
+#	Average scores across subjects of students grouped by gender.
+select si.gender ,avg(se.math_score) as avg_maths ,avg(se.reading_score) as avg_reading, avg(se.writing_score) as avg_writing from `midyear-nebula-413114.student_details.student_exam_results`AS se inner join `midyear-nebula-413114.student_details.student_csv`as si
+on se.student_id = si.student_id  
+group by si.gender;
 
-SELECT *  FROM `midyear-nebula-413114.Project_1.Sales` LIMIT 1000;
+#How does parental level of education affect student test scores
+SELECT
+  Parental_Level_of_Education,
+  CORR(se.math_score, se.reading_score) AS math_reading_correlation,
+  CORR(se.math_score, se.writing_score) AS math_writing_correlation,
+  CORR(se.reading_score, se.writing_score) AS reading_writing_correlation
+FROM
+  `midyear-nebula-413114.student_details.student_exam_survey` as si
+join 
+  `midyear-nebula-413114.student_details.student_exam_results`AS se
+on se.student_id = si.student_id  
 
-select sum(total_sales) as totalsales , trans_month from `midyear-nebula-413114.Project_1.Sales`
-group by trans_month order by totalsales desc;
-#2)	How do sales compare throughout the day? (Morning, midday, evening)
-
-SELECT Hours, sum(total_sales)  as totalsales FROM `midyear-nebula-413114.Project_1.Sales`
-group by Hours order by totalsales desc;
-
-#3)	What products are selling the most?
-SELECT prod_category, sum(total_sales) as Totalsales  FROM `midyear-nebula-413114.Project_1.Sales` 
-group by prod_category ORDER BY TOTAlsales desc;
-
-#4)	Where (physical location) are most of the customers
-
-SELECT  cust_state, count(cust_id) as counts   FROM `midyear-nebula-413114.Project_1.Sales`
- group by cust_state order by counts desc;
-
-#5)	What age groups do we see the most sales?
-
-
-SELECT cust_age, sum(total_sales) as totalsales  FROM `midyear-nebula-413114.Project_1.Sales` 
- group by cust_age  order by totalsales desc;
-
-
- #6)	How much has the average customer spent throughout Jan 2021 – Jun 2021?
-
-
-SELECT 
-     COUNT(DISTINCT cust_id) AS average_spent_per_customer
-FROM 
-    `midyear-nebula-413114.Project_1.Sales`
-WHERE 
-    date BETWEEN '2021-01-01' AND '2021-06-30';
-
+GROUP BY
+  Parental_Level_of_Education
+ORDER BY
+  Parental_Level_of_Education;
+# How well did the test preparation course help students?
+SELECT
+  CORR(math_score,si.test_preparation_course) AS math_score_corr,
+  CORR(reading_score, si.test_preparation_course) AS reading_score_corr,
+  CORR(writing_score, si.test_preparation_course) AS writing_score_corr
+FROM
+  `midyear-nebula-413114.student_details.student_exam_survey` as si
+join 
+  `midyear-nebula-413114.student_details.student_exam_results`AS se
+on se.student_id = si.student_id ;
 
 
