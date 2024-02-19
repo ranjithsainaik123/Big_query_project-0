@@ -3,7 +3,7 @@ select si.year_group ,avg(se.math_score) as avg_maths ,avg(se.reading_score) as 
 on se.student_id = si.student_id  
 group by si.year_group 
 ORDER BY si.year_group  ASC;
-#	Average scores across subjects of students grouped by gender.
+#Average scores across subjects of students grouped by gender.
 select si.gender ,avg(se.math_score) as avg_maths ,avg(se.reading_score) as avg_reading, avg(se.writing_score) as avg_writing from `midyear-nebula-413114.student_details.student_exam_results`AS se inner join `midyear-nebula-413114.student_details.student_csv`as si
 on se.student_id = si.student_id  
 group by si.gender;
@@ -24,7 +24,7 @@ GROUP BY
   Parental_Level_of_Education
 ORDER BY
   Parental_Level_of_Education;
-# How well did the test preparation course help students?
+#How well did the test preparation course help students?
 SELECT
   CORR(math_score,si.test_preparation_course) AS math_score_corr,
   CORR(reading_score, si.test_preparation_course) AS reading_score_corr,
